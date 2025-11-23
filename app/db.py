@@ -14,7 +14,7 @@ from .models import Base  # مهم: اضافه شد
 
 
 engine: AsyncEngine = create_async_engine(
-    settings.database_url,
+    settings.resolved_database_url,
     future=True,
 )
 
@@ -41,7 +41,7 @@ async def init_db():
     وقتی دیتابیس sqlite+aiosqlite باشد،
     جدول‌ها را اتوماتیک می‌سازد.
     """
-    if settings.database_url.startswith("sqlite"):
+    if settings.resolved_database_url.startswith("sqlite"):
         async with engine.begin() as conn:
             # به SQLAlchemy می‌گوید همه جداول را بسازد
             await conn.run_sync(Base.metadata.create_all)
